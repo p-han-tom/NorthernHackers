@@ -6,61 +6,116 @@ public class BeaverAi : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator animator;
-    float speed = 1f;
-    float chargeSpeed = 3f;
-    bool idle = false;
-    float idleTime = 0f;
-    float wanderingTime = 0f;
-    bool enraged = false;
+    float normalSpeed = 1f;
+    float chargeSpeed = 2f;
+    float speed;
+    enum beaverState { idle, wander, charge, stunned }
+    beaverState state = beaverState.idle;
+    float stateTimer = 0;
     Vector2 movement;
+    List<GameObject> players;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        stateTimer = Random.Range(0, 2f);
+        players = new List<GameObject>();
+        speed = normalSpeed;
     }
     void Update()
     {
-        if (enraged == false)
+        if (state == beaverState.idle)
         {
-            if (idleTime <= 0) {
-                idle = false;
-            }
-            if (idle == false) {
-                WanderDirection();
-            }
-            if (idle == false && wanderingTime > 0) {
-                Move();
-            }
-            if (wanderingTime <= 0)
+            if (stateTimer <= 0)
             {
-                idleTime = Random.Range(1f, 2f);
-            }
-            if (idleTime > 0)
-            {
-                animator.SetBool("moving", false);
+                stateTimer = Random.Range(1, 2f);
+                state = beaverState.wander;
+                movement = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
             }
         }
-        idleTime -= Time.deltaTime;
-        wanderingTime -= Time.deltaTime;
-    }
-    void WanderDirection()
-    {
-        float x = Random.Range(-1f, 1f);
-        float y = Random.Range(-1f, 1f);
-        movement = new Vector2(x, y).normalized;
-        wanderingTime = Random.Range(1f, 2f);
+        else if (state == beaverState.wander)
+        {
+            Move();
+            if (stateTimer <= 0)
+            {
+                stateTimer = Random.Range(1, 2f);
+                state = beaverState.idle;
+                animator.SetBool("moving", false);
+                rb.velocity = Vector2.zero;
+            }
+        }
+        if (state != beaverState.charge && state != beaverState.stunned)
+        {
+            foreach (GameObject player in players)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, player.transform.position - transform.position);
+                Debug.Log(hit.collider.gameObject.name);
+                if (hit.collider.tag == "Player")
+                {
+                    Debug.Log("jean");
+                    state = beaverState.charge;
+                    speed = chargeSpeed;
+                    movement = (player.transform.position - transform.position).normalized;
+                    animator.SetBool("charging", true);
+                }
+            }
+
+        }
+        if (state == beaverState.charge)
+        {
+            speed+=0.1f;
+            Move();
+        }
+        else if (state == beaverState.stunned)
+        {
+            if (stateTimer <= 0)
+            {
+                stateTimer = Random.Range(1, 2f);
+                state = beaverState.idle;
+                animator.SetBool("moving", false);
+                animator.SetBool("stunned", false);
+                rb.velocity = Vector2.zero;
+                rb.bodyType = RigidbodyType2D.Dynamic;
+                speed = normalSpeed;
+            }
+        }
+        stateTimer -= Time.deltaTime;
     }
     void Move()
     {
-        rb.velocity = movement * 1f;
+        rb.velocity = movement * speed;
         animator.SetBool("moving", true);
         transform.rotation = (movement.x < 0) ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
     }
-    void OnCollisionEnter(Collision other)
+
+    void OnCollisionEnter2D(Collision2D other)
     {
-        if (enraged == false && wanderingTime > 0)
+        if (state == beaverState.wander)
         {
             movement *= -1;
+        }
+        else if (state == beaverState.charge)
+        {
+            state = beaverState.stunned;
+            animator.SetBool("charging", false);
+            animator.SetBool("stunned", true);
+            rb.velocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            stateTimer = 2f;
+        }
+    }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            players.Add(other.gameObject);
+        }
+    }
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            players.Remove(other.gameObject);
         }
     }
 }
