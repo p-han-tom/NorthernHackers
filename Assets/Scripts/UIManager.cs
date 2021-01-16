@@ -8,19 +8,27 @@ using MLAPI.Transports.UNET;
 public class UIManager : MonoBehaviour
 {
     GameObject networkingMenu;
+    GameObject gameMenu;
+    GameObject startButton;
+    TMP_InputField nameField;
     TMP_InputField ipField;
     StageManager sm;
     void Start()
     {
         sm = GameObject.Find("Stage").GetComponent<StageManager>();
         networkingMenu = transform.Find("Networking Menu").gameObject;
-        ipField = networkingMenu.transform.GetComponentInChildren<TMP_InputField>();
+        gameMenu = transform.Find("Game Menu").gameObject;
+        startButton = gameMenu.transform.Find("Go").gameObject;
+        startButton.SetActive(false);
+        nameField = networkingMenu.transform.Find("Name").GetComponentInChildren<TMP_InputField>();
+        ipField = networkingMenu.transform.Find("IP Address").GetComponentInChildren<TMP_InputField>();
     }
 
     public void HostGame() {
         NetworkingManager.Singleton.StartHost();
         networkingMenu.SetActive(false);
         sm.initiate = true;
+        startButton.SetActive(true);
     }
     public void JoinGame() {
         string ip = ipField.text;
