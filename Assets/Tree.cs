@@ -16,7 +16,11 @@ public class Tree : NetworkedBehaviour
         animator = GetComponent<Animator>();
     }
 
-    [ServerRPC]
+    public void HitTree() {
+        InvokeServerRpc(TakeDamage);
+    }
+
+    [ServerRPC(RequireOwnership = false)]
     public void TakeDamage() {
         hp.Value -= 1;
         animator.SetTrigger("hit");

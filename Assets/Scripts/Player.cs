@@ -35,7 +35,7 @@ public class Player : NetworkedBehaviour
             // logic for creating overlap circle
             Collider2D[] hitEntities = Physics2D.OverlapCircleAll(attackPoint.position, 0.5f, treeLayer);
             foreach (Collider2D entity in hitEntities) {
-                entity.GetComponent<Tree>().TakeDamage();
+                entity.GetComponent<Tree>().HitTree();
             }
         }
     }
