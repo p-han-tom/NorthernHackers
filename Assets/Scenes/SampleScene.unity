@@ -7895,7 +7895,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 962172424}
-  - component: {fileID: 962172425}
+  - component: {fileID: 962172426}
   m_Layer: 0
   m_Name: Stage
   m_TagString: Untagged
@@ -7918,7 +7918,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &962172425
+--- !u!114 &962172426
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7927,14 +7927,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 962172423}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 209037615, guid: 01701b64234b4d523d8045142cbc73fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 069ea72214efe05469e152691acf39cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NetworkedInstanceId: 0
-  PrefabHash: 3407663764248442601
-  PrefabHashGenerator: Stage
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
+  tree: {fileID: 7574572452386716025, guid: 673452e3b0d3aa442b3a8daae7fe551d, type: 3}
+  rocks: {fileID: 7574572452386716025, guid: 673452e3b0d3aa442b3a8daae7fe551d, type: 3}
 --- !u!1 &1212778011
 GameObject:
   m_ObjectHideFlags: 0
@@ -8739,6 +8736,9 @@ MonoBehaviour:
     - Prefab: {fileID: 2615450720193938167, guid: b575bc2948099094fa23573dace656db,
         type: 3}
       PlayerPrefab: 1
+    - Prefab: {fileID: 7574572452386716025, guid: 673452e3b0d3aa442b3a8daae7fe551d,
+        type: 3}
+      PlayerPrefab: 0
     PlayerPrefabHash:
       Value: 1897319656204293034
     CreatePlayerPrefab: 1
