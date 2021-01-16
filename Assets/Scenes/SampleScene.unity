@@ -8085,6 +8085,9 @@ MonoBehaviour:
   tree: {fileID: 7574572452386716025, guid: 673452e3b0d3aa442b3a8daae7fe551d, type: 3}
   rocks: {fileID: 7574572452386716025, guid: 673452e3b0d3aa442b3a8daae7fe551d, type: 3}
   initiate: 0
+  treeLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &1180791280
 GameObject:
   m_ObjectHideFlags: 0
