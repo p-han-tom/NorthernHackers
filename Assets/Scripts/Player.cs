@@ -12,6 +12,7 @@ public class Player : NetworkedBehaviour
     private Transform attackPoint;
 
     public LayerMask treeLayer;
+    public bool hacking = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,9 +25,12 @@ public class Player : NetworkedBehaviour
     void CheckInput() {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
+    
+        
 
         if (Input.GetMouseButtonDown(0)) {
-            // animator.SetTrigger("hack");
+            animator.SetTrigger("hack");
+            hacking = true;
 
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = (mousePos-transform.position).normalized;
@@ -53,12 +57,12 @@ public class Player : NetworkedBehaviour
 
     void Move()
     {
-        rb.velocity = movement * 2f;
+        rb.velocity = hacking ? Vector2.zero : movement * 2f;
 
         if (rb.velocity != Vector2.zero)
         {
             transform.rotation = (movement.x < 0) ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
-            animator.SetBool("moving", true);
+            animator.SetBool("moving", hacking ? false : true);
         }
         else
         {
