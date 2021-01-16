@@ -74,12 +74,13 @@ public class UIManager : NetworkedBehaviour
         //     pointTracker.Add(name, 0);
         // }
     }
-    [ServerRPC]
+    [ServerRPC(RequireOwnership = false)]
     void ClientInitiatePlayer(ulong clientId, string name)
     {
         playerNames.Add(clientId, name);
         woodTracker.Add(name, 0);
         pointTracker.Add(name, 0);
+        Debug.Log(name + " (client " + clientId + ") has joined");
     }
 
     // Called from server
