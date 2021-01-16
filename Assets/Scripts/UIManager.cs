@@ -26,6 +26,7 @@ public class UIManager : NetworkedBehaviour
         gameMenu = transform.Find("Game Menu").gameObject;
         startButton = gameMenu.transform.Find("Go").gameObject;
         startButton.SetActive(false);
+        gameMenu.SetActive(false);
         nameField = networkingMenu.transform.Find("Name").GetComponentInChildren<TMP_InputField>();
         ipField = networkingMenu.transform.Find("IP Address").GetComponentInChildren<TMP_InputField>();
         playerNames = new Dictionary<ulong, string>();
