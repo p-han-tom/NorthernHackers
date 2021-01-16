@@ -16,8 +16,9 @@ public class UIManager : NetworkedBehaviour
     StageManager sm;
     //clientId, playername
     Dictionary<ulong, string> playerNames;
-    Dictionary<string, int> woodTracker;
-    Dictionary<string, int> pointTracker;
+    Dictionary<ulong, int> woodTracker;
+    Dictionary<ulong, int> pointTracker;
+    public int treeCounter = 0;
     void Start()
     {
         sm = GameObject.Find("Stage").GetComponent<StageManager>();
@@ -28,8 +29,8 @@ public class UIManager : NetworkedBehaviour
         nameField = networkingMenu.transform.Find("Name").GetComponentInChildren<TMP_InputField>();
         ipField = networkingMenu.transform.Find("IP Address").GetComponentInChildren<TMP_InputField>();
         playerNames = new Dictionary<ulong, string>();
-        woodTracker = new Dictionary<string, int>();
-        pointTracker = new Dictionary<string, int>();
+        woodTracker = new Dictionary<ulong, int>();
+        pointTracker = new Dictionary<ulong, int>();
     }
 
     public void HostGame()
@@ -65,38 +66,29 @@ public class UIManager : NetworkedBehaviour
             name = "Player " + NetworkingManager.Singleton.LocalClientId.ToString();
         }
 
-        // if (!IsServer) 
         InvokeServerRpc(ClientInitiatePlayer, clientId, name);
-        // else
-        // {
-        //     playerNames.Add(clientId, name);
-        //     woodTracker.Add(name, 0);
-        //     pointTracker.Add(name, 0);
-        // }
     }
     [ServerRPC(RequireOwnership = false)]
     void ClientInitiatePlayer(ulong clientId, string name)
     {
         playerNames.Add(clientId, name);
-        woodTracker.Add(name, 0);
-        pointTracker.Add(name, 0);
+        woodTracker.Add(clientId, 0);
+        pointTracker.Add(clientId, 0);
         Debug.Log(name + " (client " + clientId + ") has joined");
     }
 
     // Called from server
     public void AddWood(ulong clientId, int wood)
     {
-        string playerName = GetName(clientId);
-        woodTracker[playerName] = woodTracker[playerName] + wood;
-        Debug.Log(GetName(clientId) + " has " + woodTracker[playerName] + " wood.");
-
+        woodTracker[clientId] = woodTracker[clientId] + wood;
+        Debug.Log(GetName(clientId) + " has " + woodTracker[clientId] + " wood.");
     }
     // Called from server TODO: add call for this
     public void AddPoint(ulong clientId)
     {
         string playerName = GetName(clientId);
-        pointTracker[playerName] = pointTracker[playerName] + 1;
-        Debug.Log(GetName(clientId) + " has " + woodTracker[playerName] + " points.");
+        pointTracker[clientId] = pointTracker[clientId] + 1;
+        Debug.Log(GetName(clientId) + " has " + woodTracker[clientId] + " points.");
     }
     string GetName(ulong clientId)
     {
@@ -106,5 +98,23 @@ public class UIManager : NetworkedBehaviour
             return playerName;
         }
         return null;
+    }
+    public void treeDestroyed()
+    {
+        treeCounter--;
+        if (treeCounter <= 0)
+        {
+            ulong clientIdWinner = 0;
+            int highestWood = 0;
+            foreach (KeyValuePair<ulong, int> entry in woodTracker)
+            {
+                if (entry.Value > highestWood) {
+                    highestWood = entry.Value;
+                    clientIdWinner = entry.Key;
+                }
+            }
+            pointTracker[clientIdWinner]+=1;
+            Debug.Log(GetName(clientIdWinner)+" won with "+highestWood+". They now have "+pointTracker[clientIdWinner]+" points.");
+        }
     }
 }

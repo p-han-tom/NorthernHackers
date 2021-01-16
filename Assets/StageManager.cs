@@ -11,6 +11,8 @@ public class StageManager : MonoBehaviour
     public GameObject beaver;
     public bool initiate;
     public LayerMask treeLayer;
+    UIManager manager;
+
 
     private float beaverSpawnTimer = 8f;
     private GameObject beaverInstance;
@@ -20,7 +22,7 @@ public class StageManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        beaverSpawned = false;
+        manager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -50,7 +52,6 @@ public class StageManager : MonoBehaviour
 
             beaverInstance.GetComponent<CapsuleCollider2D>().enabled = false;
             beaverInstance.GetComponent<CircleCollider2D>().enabled = false;
-
             beaverInstance.GetComponent<Rigidbody2D>().gravityScale = .5f;
             beaverInstance.GetComponent<BeaverAi>().enabled = false;
             beaverSpawned = true;
@@ -60,7 +61,6 @@ public class StageManager : MonoBehaviour
             if (beaverInstance.transform.position.y <= beaverSpawnPos.y) {
                 beaverInstance.GetComponent<CapsuleCollider2D>().enabled = true;
                 beaverInstance.GetComponent<CircleCollider2D>().enabled = true;
-
                 beaverInstance.GetComponent<Rigidbody2D>().gravityScale = 0f;
                 beaverInstance.GetComponent<BeaverAi>().enabled = true;
 
@@ -90,6 +90,8 @@ public class StageManager : MonoBehaviour
             }
 
             if (spawnTree) {
+                manager.treeCounter++;
+
                 GameObject treeInstance = Instantiate(tree, new Vector3(x,y,0), Quaternion.identity);
                 treeInstance.GetComponent<NetworkedObject>().Spawn();
             }
