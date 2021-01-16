@@ -8,6 +8,7 @@ public class StageManager : MonoBehaviour
 
     public GameObject tree;
     public GameObject rocks;
+    public GameObject beaver;
     public bool initiate;
     public LayerMask treeLayer;
 
@@ -23,8 +24,8 @@ public class StageManager : MonoBehaviour
         if (initiate) {
             initiate = false;
             GenerateStage();
-            // GameObject treeInstance = Instantiate(tree, new Vector3(5,0,0), Quaternion.identity);
-            // treeInstance.GetComponent<NetworkedObject>().Spawn();
+            GameObject beaverInstance = Instantiate(beaver, new Vector3(5,0,0), Quaternion.identity);
+            beaverInstance.GetComponent<NetworkedObject>().Spawn();
         }
     }
 
