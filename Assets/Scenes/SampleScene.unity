@@ -1715,8 +1715,8 @@ MonoBehaviour:
   MessageBufferSize: 5120
   MaxConnections: 100
   ConnectAddress: 127.0.0.1
-  ConnectPort: 7777
-  ServerListenPort: 7777
+  ConnectPort: 6567
+  ServerListenPort: 6567
   ServerWebsocketListenPort: 8887
   SupportWebsocket: 0
   Channels: []
