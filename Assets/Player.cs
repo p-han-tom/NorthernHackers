@@ -26,10 +26,10 @@ public class Player : NetworkedBehaviour
     void Update()
     {
         
-        if (IsLocalPlayer) {
+        // if (IsLocalPlayer) {
             CheckInput();
             Move(); 
-        }
+        // }
     }
 
     void Move()
