@@ -9,8 +9,10 @@ public class UIManager : MonoBehaviour
 {
     GameObject networkingMenu;
     TMP_InputField ipField;
+    StageManager sm;
     void Start()
     {
+        sm = GameObject.Find("Stage").GetComponent<StageManager>();
         networkingMenu = transform.Find("Networking Menu").gameObject;
         ipField = networkingMenu.transform.GetComponentInChildren<TMP_InputField>();
     }
@@ -18,6 +20,7 @@ public class UIManager : MonoBehaviour
     public void HostGame() {
         NetworkingManager.Singleton.StartHost();
         networkingMenu.SetActive(false);
+        sm.initiate = true;
     }
     public void JoinGame() {
         string ip = ipField.text;
