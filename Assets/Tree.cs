@@ -29,6 +29,7 @@ public class Tree : NetworkedBehaviour
         animator.SetTrigger("hit");
         if (hp.Value == 0) {
             manager.AddWood(clientId, 5);
+            manager.treeDestroyed();
             Destroy(gameObject);
         }
     }

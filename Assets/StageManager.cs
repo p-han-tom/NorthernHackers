@@ -11,11 +11,12 @@ public class StageManager : MonoBehaviour
     public GameObject beaver;
     public bool initiate;
     public LayerMask treeLayer;
+    UIManager manager;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        manager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -47,6 +48,7 @@ public class StageManager : MonoBehaviour
             }
 
             if (spawnTree) {
+                manager.treeCounter++;
                 GameObject treeInstance = Instantiate(tree, new Vector3(x,y,0), Quaternion.identity);
                 treeInstance.GetComponent<NetworkedObject>().Spawn();
             }
