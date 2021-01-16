@@ -7,6 +7,7 @@ public class BeaverAi : NetworkedBehaviour
 {
     private Rigidbody2D rb;
     private Animator animator;
+    private AudioManager audioManager;
     float normalSpeed = 1f;
     float chargeSpeed = 2f;
     float speed;
@@ -22,6 +23,7 @@ public class BeaverAi : NetworkedBehaviour
         stateTimer = Random.Range(0, 2f);
         players = new List<GameObject>();
         speed = normalSpeed;
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
     void Update()
     {
@@ -60,6 +62,7 @@ public class BeaverAi : NetworkedBehaviour
                         speed = chargeSpeed;
                         movement = (player.transform.position - transform.position).normalized;
                         animator.SetBool("charging", true);
+                        audioManager.Play("BeaverCharge");
                     }
                 }
             }
@@ -103,6 +106,8 @@ public class BeaverAi : NetworkedBehaviour
             state = beaverState.stunned;
             animator.SetBool("charging", false);
             animator.SetBool("stunned", true);
+            audioManager.Play("BeaverHit");
+            audioManager.Stop("BeaverCharge");
             rb.velocity = Vector2.zero;
             rb.bodyType = RigidbodyType2D.Kinematic;
             stateTimer = 2f;

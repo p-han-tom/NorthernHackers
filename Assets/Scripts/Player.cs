@@ -10,6 +10,7 @@ public class Player : NetworkedBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private Transform attackPoint;
+    private AudioManager audioManager;
 
     public LayerMask treeLayer;
     public bool hacking = false;
@@ -20,6 +21,7 @@ public class Player : NetworkedBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         attackPoint = transform.Find("AttackPoint");
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     void CheckInput() {
@@ -40,6 +42,7 @@ public class Player : NetworkedBehaviour
             Collider2D[] hitEntities = Physics2D.OverlapCircleAll(attackPoint.position, 0.5f, treeLayer);
             foreach (Collider2D entity in hitEntities) {
                 entity.GetComponent<Tree>().HitTree();
+                audioManager.Play("TreeHit");
             }
         }
     }
