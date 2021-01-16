@@ -6,19 +6,18 @@ using MLAPI;
 public class Statbox : NetworkedBehaviour
 {
     public ulong clientId;
-    TextMeshProUGUI playerName;
-    TextMeshProUGUI wood;
-    TextMeshProUGUI points;
+    TextMeshProUGUI statsText;
     void Start()
     {
-        playerName = transform.Find("Name").GetComponent<TextMeshProUGUI>();
-        wood = transform.Find("Wood").GetComponent<TextMeshProUGUI>();
-        points = transform.Find("Points").GetComponent<TextMeshProUGUI>();
+        statsText = transform.Find("Text").GetComponent<TextMeshProUGUI>();
     }
-    public void UpdateText(string name, int wood, int points) {
-        Debug.Log(this.playerName.text+", "+this.wood.text+", "+this.points.text);
-        this.playerName.text = name;
-        this.wood.text = "<sprite=1>"+wood.ToString();
-        this.points.text = "<sprite=0>"+points.ToString();
+    public void UpdateText(string name, int wood, int points)
+    {
+        statsText.text = name + "\n<sprite=1>" + wood + "\n<sprite=0>" + points;
     }
+    public void UpdateTextWithText(string text)
+    {
+        statsText.text = text;
+    }
+    public string GetText() { return statsText.text; }
 }

@@ -41,9 +41,16 @@ public class UIManager : NetworkedBehaviour
         pointTracker = new Dictionary<ulong, int>();
         statboxes = new List<Statbox>();
     }
-    public void StartRound() {
+    public void StartRound()
+    {
         GameObject.Find("Stage").GetComponent<StageManager>().GenerateStage();
         roundActive = true;
+        startButton.SetActive(false);
+
+        foreach (KeyValuePair<ulong, int> entry in woodTracker)
+        {
+            woodTracker[entry.Key] = 0;
+        }
     }
 
     public void HostGame()
@@ -82,11 +89,7 @@ public class UIManager : NetworkedBehaviour
 
         InvokeServerRpc(ClientInitiatePlayer, clientId, name);
 
-        GameObject IstatboxPrefab = Instantiate(statboxPrefab);
-        IstatboxPrefab.transform.parent = hud.transform.Find("Stats").transform;
-        // IstatboxPrefab.GetComponent<NetworkedObject>().Spawn();
-        statboxes.Add(IstatboxPrefab.GetComponent<Statbox>());
-        IstatboxPrefab.GetComponent<Statbox>().clientId = clientId;
+
     }
     [ServerRPC(RequireOwnership = false)]
     void ClientInitiatePlayer(ulong clientId, string name)
@@ -95,6 +98,13 @@ public class UIManager : NetworkedBehaviour
         woodTracker.Add(clientId, 0);
         pointTracker.Add(clientId, 0);
         Debug.Log(name + " (client " + clientId + ") has joined");
+
+        GameObject IstatboxPrefab = Instantiate(statboxPrefab);
+        IstatboxPrefab.transform.SetParent(hud.transform.Find("Stats").transform, false);
+        // IstatboxPrefab.GetComponent<NetworkedObject>().Spawn();
+        statboxes.Add(IstatboxPrefab.GetComponent<Statbox>());
+        IstatboxPrefab.GetComponent<Statbox>().clientId = clientId;
+
         InvokeClientRpcOnEveryone(UpdateStats);
     }
 
@@ -113,9 +123,11 @@ public class UIManager : NetworkedBehaviour
         Debug.Log(GetName(clientId) + " has " + woodTracker[clientId] + " points.");
         InvokeClientRpcOnEveryone(UpdateStats);
     }
-    [ClientRPC] 
-    public void UpdateStats() {
-        foreach(Statbox statbox in statboxes) {
+    [ClientRPC]
+    public void UpdateStats()
+    {
+        foreach (Statbox statbox in statboxes)
+        {
             ulong statboxId = statbox.clientId;
             statbox.UpdateText(GetName(statboxId), woodTracker[statboxId], pointTracker[statboxId]);
         }
@@ -138,14 +150,16 @@ public class UIManager : NetworkedBehaviour
             int highestWood = 0;
             foreach (KeyValuePair<ulong, int> entry in woodTracker)
             {
-                if (entry.Value > highestWood) {
+                if (entry.Value > highestWood)
+                {
                     highestWood = entry.Value;
                     clientIdWinner = entry.Key;
                 }
             }
-            pointTracker[clientIdWinner]+=1;
-            Debug.Log(GetName(clientIdWinner)+" won with "+highestWood+". They now have "+pointTracker[clientIdWinner]+" points.");
+            AddPoint(clientIdWinner);
+            Debug.Log(GetName(clientIdWinner) + " won with " + highestWood + ". They now have " + pointTracker[clientIdWinner] + " points.");
             roundActive = false;
+            startButton.SetActive(true);
         }
     }
 }
