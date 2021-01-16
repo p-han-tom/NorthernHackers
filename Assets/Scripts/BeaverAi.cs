@@ -52,10 +52,8 @@ public class BeaverAi : NetworkedBehaviour
                 foreach (GameObject player in players)
                 {
                     RaycastHit2D hit = Physics2D.Raycast(transform.position, player.transform.position - transform.position);
-                    Debug.Log(hit.collider.gameObject.name);
                     if (hit.collider.tag == "Player")
                     {
-                        Debug.Log("jean");
                         state = beaverState.charge;
                         speed = chargeSpeed;
                         movement = (player.transform.position - transform.position).normalized;
@@ -97,7 +95,7 @@ public class BeaverAi : NetworkedBehaviour
         {
             movement *= -1;
         }
-        // turn this into serverrpc maybe so that beaver will get stunned if client gets hit
+        // TODO: turn this into serverrpc maybe so that beaver will get stunned if client gets hit
         else if (state == beaverState.charge)
         {
             state = beaverState.stunned;
