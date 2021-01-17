@@ -15,7 +15,9 @@ public class BeaverAi : NetworkedBehaviour
     beaverState state = beaverState.idle;
     float stateTimer = 0;
     Vector2 movement;
+    Vector3 raycastOffset;
     List<GameObject> players;
+    public string ob;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -23,6 +25,7 @@ public class BeaverAi : NetworkedBehaviour
         stateTimer = Random.Range(0, 2f);
         players = new List<GameObject>();
         speed = normalSpeed;
+        raycastOffset = GetComponent<BoxCollider2D>().offset;
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"));
     }
@@ -30,6 +33,22 @@ public class BeaverAi : NetworkedBehaviour
     {
         if (IsServer)
         {
+            if (state != beaverState.charge && state != beaverState.stunned)
+            {
+                foreach (GameObject player in players)
+                {
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position + raycastOffset, player.transform.position - transform.position);
+                    Debug.DrawRay(transform.position + raycastOffset, player.transform.position - transform.position);
+                    if (hit.collider.tag == "Player")
+                    {
+                        state = beaverState.charge;
+                        speed = chargeSpeed;
+                        movement = (player.transform.position - transform.position).normalized;
+                        animator.SetBool("charging", true);
+                        audioManager.Play("BeaverCharge");
+                    }
+                }
+            }
             if (state == beaverState.idle)
             {
                 if (stateTimer <= 0)
@@ -50,26 +69,12 @@ public class BeaverAi : NetworkedBehaviour
                     rb.velocity = Vector2.zero;
                 }
             }
-            if (state != beaverState.charge && state != beaverState.stunned)
-            {
-                foreach (GameObject player in players)
-                {
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, player.transform.position - transform.position);
-                    Debug.DrawRay(transform.position, player.transform.position - transform.position);
-                    if (hit.collider.tag == "Player")
-                    {
-                        state = beaverState.charge;
-                        speed = chargeSpeed;
-                        movement = (player.transform.position - transform.position).normalized;
-                        animator.SetBool("charging", true);
-                        audioManager.Play("BeaverCharge");
-                    }
-                }
-            }
-            if (state == beaverState.charge)
+
+            else if (state == beaverState.charge)
             {
                 speed += 0.1f;
-                if (speed > 20f) {
+                if (speed > 20f)
+                {
                     state = beaverState.wander;
                     speed = normalSpeed;
                     animator.SetBool("charging", false);
@@ -121,7 +126,8 @@ public class BeaverAi : NetworkedBehaviour
             rb.bodyType = RigidbodyType2D.Kinematic;
             stateTimer = 2f;
 
-            if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
                 other.gameObject.GetComponent<Player>().Stunned();
             }
         }

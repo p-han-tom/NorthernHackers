@@ -78,33 +78,33 @@ public class StageManager : NetworkedBehaviour
     public void GenerateStage()
     {
         // maxmimum of 32 trees
-        // float x;
-        // float y;
-        // bool spawnTree = true;
-        // for (int i = 0; i < 24; i++)
-        // {
-        //     x = Random.Range(-8f, 8f);
-        //     y = Random.Range(-3.5f, 3.5f);
+        float x;
+        float y;
+        bool spawnTree = true;
+        for (int i = 0; i < 24; i++)
+        {
+            x = Random.Range(-8f, 8f);
+            y = Random.Range(-3.5f, 3.5f);
 
-        //     Collider2D[] treeCheck = Physics2D.OverlapCircleAll(new Vector3(x, y, 0), .75f, treeLayer);
-        //     foreach (Collider2D entity in treeCheck)
-        //     {
-        //         if (entity.gameObject.layer == LayerMask.NameToLayer("Tree"))
-        //         {
-        //             spawnTree = false;
-        //             break;
-        //         }
-        //     }
+            Collider2D[] treeCheck = Physics2D.OverlapCircleAll(new Vector3(x, y, 0), .75f, treeLayer);
+            foreach (Collider2D entity in treeCheck)
+            {
+                if (entity.gameObject.layer == LayerMask.NameToLayer("Tree"))
+                {
+                    spawnTree = false;
+                    break;
+                }
+            }
 
-        //     if (spawnTree)
-        //     {
-        //         manager.treeCounter++;
+            if (spawnTree)
+            {
+                manager.treeCounter++;
 
-        //         GameObject treeInstance = Instantiate(tree, new Vector3(x, y, 0), Quaternion.identity);
-        //         treeInstance.GetComponent<NetworkedObject>().Spawn();
-        //     }
-        //     spawnTree = true;
+                GameObject treeInstance = Instantiate(tree, new Vector3(x, y, 0), Quaternion.identity);
+                treeInstance.GetComponent<NetworkedObject>().Spawn();
+            }
+            spawnTree = true;
 
-        // }
+        }
     }
 }
