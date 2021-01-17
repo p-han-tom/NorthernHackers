@@ -14,10 +14,12 @@ public class Player : NetworkedBehaviour
     private float stunTimer;
     private bool stunned;
     UIManager manager;
+    float hurtCD = 0.5f;
+    float hurtCDelapsed = 0f;
 
     public LayerMask treeLayer;
     public bool hacking = false;
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -44,7 +46,8 @@ public class Player : NetworkedBehaviour
             Vector2 direction = (mousePos - transform.position).normalized;
             transform.rotation = (direction.x < 0) ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
         }
-        else {
+        else
+        {
             animator.SetBool("hacking", false);
         }
     }
@@ -53,11 +56,12 @@ public class Player : NetworkedBehaviour
     {
         if (IsLocalPlayer)
         {// logic for creating overlap circle
-        Collider2D[] hitEntities = Physics2D.OverlapCircleAll(attackPoint.position, 0.5f, treeLayer);
-        foreach (Collider2D entity in hitEntities)
-        {
-            entity.GetComponent<Tree>().HitTree(OwnerClientId);
-        }}
+            Collider2D[] hitEntities = Physics2D.OverlapCircleAll(attackPoint.position, 0.5f, treeLayer);
+            foreach (Collider2D entity in hitEntities)
+            {
+                entity.GetComponent<Tree>().HitTree(OwnerClientId);
+            }
+        }
     }
     // Update is called once per frame
     void Update()
@@ -65,16 +69,20 @@ public class Player : NetworkedBehaviour
 
         if (IsLocalPlayer)
         {
-        
+
             CheckInput();
             Move();
-            if (stunTimer > 0) {
+            if (stunTimer > 0)
+            {
                 rb.velocity = Vector2.zero;
                 stunTimer -= Time.deltaTime;
-            } else {
+            }
+            else
+            {
                 animator.SetBool("stunned", false);
                 stunned = false;
             }
+            hurtCDelapsed -= Time.deltaTime;
         }
     }
 
@@ -94,15 +102,22 @@ public class Player : NetworkedBehaviour
         }
     }
 
-    public void Stunned(){
+    public void Stunned()
+    {
         animator.SetBool("stunned", true);
         stunTimer = .5f;
         stunned = true;
-        manager.AddWood(OwnerClientId, -5);
+        if (hurtCDelapsed <= 0)
+        {
+            manager.AddWood(OwnerClientId, -5);
+            hurtCDelapsed = hurtCD;
+        }
     }
-    void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
             Stunned();
-        }    
+        }
     }
 }

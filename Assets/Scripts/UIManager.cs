@@ -176,7 +176,7 @@ public class UIManager : NetworkedBehaviour
     {
         string playerName = GetName(clientId);
         pointTracker[clientId] = pointTracker[clientId] + 1;
-        AddWood(clientId, -999);
+        // AddWood(clientId, -999);
         // Debug.Log(GetName(clientId) + " has " + woodTracker[clientId] + " points.");
         UpdateStats();
     }
@@ -196,13 +196,13 @@ public class UIManager : NetworkedBehaviour
         {
             ulong clientIdWinner = 0;
             int highestWood = 0;
-            foreach (KeyValuePair<ulong, int> entry in woodTracker)
+            foreach (ulong clientId in playerNames.Keys)
             {
-                if (entry.Value > highestWood)
+                if (woodTracker[clientId] > highestWood)
                 {
-                    highestWood = entry.Value;
-                    clientIdWinner = entry.Key;
-                    // AddWood(entry.Key, -9999);
+                    highestWood = woodTracker[clientId];
+                    clientIdWinner = clientId;
+                    AddWood(clientId, -999);
                 }
             }
             AddPoint(clientIdWinner);
