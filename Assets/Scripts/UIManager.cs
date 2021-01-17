@@ -27,6 +27,7 @@ public class UIManager : NetworkedBehaviour
     public GameObject statboxPrefab;
     List<Statbox> statboxes;
     GameObject exitButton;
+    GameObject helpText;
     void Start()
     {
         sm = GameObject.Find("Stage").GetComponent<StageManager>();
@@ -37,6 +38,8 @@ public class UIManager : NetworkedBehaviour
         hud = gameMenu.transform.Find("HUD").gameObject;
         exitButton = transform.Find("Exit").gameObject;
         exitButton.SetActive(false);
+        helpText = networkingMenu.transform.Find("Help Text").gameObject;
+        helpText.SetActive(false);
 
         gameMenu.SetActive(false);
 
@@ -208,4 +211,5 @@ public class UIManager : NetworkedBehaviour
             startButton.SetActive(true);
         }
     }
+    public void ToggleHelp() {helpText.SetActive(!helpText.activeSelf);}
 }
