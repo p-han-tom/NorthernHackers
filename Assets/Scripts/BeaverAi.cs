@@ -19,6 +19,11 @@ public class BeaverAi : NetworkedBehaviour
     Vector2 movement;
     Transform raycastOrigin;
     List<GameObject> players;
+
+
+    private float chargeCooldown = 0f;
+    Vector2 chargeDirection;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -35,6 +40,9 @@ public class BeaverAi : NetworkedBehaviour
     {
         if (IsServer)
         {
+            if (chargeCooldown > 0f) {
+                chargeCooldown -= Time.deltaTime;
+            }
             if (state != beaverState.charge && state != beaverState.stunned)
             {
                 foreach (GameObject player in players)
@@ -44,11 +52,15 @@ public class BeaverAi : NetworkedBehaviour
 
                     if (hit.collider != null && hit.collider.tag == "Player")
                     {
-                        state = beaverState.charge;
-                        speed = chargeSpeed;
-                        movement = (player.transform.position - transform.position).normalized;
-                        animator.SetBool("charging", true);
-                        audioManager.Play("BeaverCharge");
+                        if (chargeCooldown <= 0f) {
+                            state = beaverState.charge;
+                            speed = chargeSpeed;
+                            movement = (player.transform.position - transform.position).normalized;
+                            animator.SetBool("charging", true);
+                            audioManager.Play("BeaverCharge");
+                            chargeCooldown = 0f;
+                            chargeDirection = movement;
+                        }
                     }
                 }
             }
@@ -97,7 +109,7 @@ public class BeaverAi : NetworkedBehaviour
                 if (stateTimer <= 0)
                 {
                     stateTimer = Random.Range(1, 2f);
-                    state = beaverState.idle;
+                    state = beaverState.wander;
                     animator.SetBool("charging", false);
                     animator.SetBool("moving", false);
                     animator.SetBool("stunned", false);
@@ -111,9 +123,10 @@ public class BeaverAi : NetworkedBehaviour
     }
     void Move()
     {
+        if (chargeCooldown > 0f) GetOutOfWall();
         rb.velocity = movement * speed;
         animator.SetBool("moving", true);
-        transform.rotation = (movement.x < 0) ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
+        transform.rotation = (movement.x < 0 || chargeCooldown > 0f) ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
     }
 
     void OnCollisionStay2D(Collision2D other)
@@ -129,6 +142,11 @@ public class BeaverAi : NetworkedBehaviour
             rb.velocity = Vector2.zero;
             // rb.bodyType = RigidbodyType2D.Kinematic;
             stateTimer = 2f;
+            chargeCooldown = 4f;
         }
+    }
+
+    void GetOutOfWall() {
+        movement = -movement;
     }
 }
