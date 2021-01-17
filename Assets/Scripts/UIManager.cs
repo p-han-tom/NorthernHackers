@@ -42,6 +42,7 @@ public class UIManager : NetworkedBehaviour
         pointTracker = new Dictionary<ulong, int>();
         statboxes = new List<Statbox>();
     }
+    // called by server
     public void StartRound()
     {
         GameObject.Find("Stage").GetComponent<StageManager>().GenerateStage();
@@ -100,11 +101,7 @@ public class UIManager : NetworkedBehaviour
         pointTracker.Add(clientId, 0);
         Debug.Log(name + " (client " + clientId + ") has joined");
 
-        GameObject IstatboxPrefab = Instantiate(statboxPrefab);
-        IstatboxPrefab.transform.SetParent(hud.transform.Find("Stats").transform, false);
-        IstatboxPrefab.GetComponent<NetworkedObject>().Spawn();
-        statboxes.Add(IstatboxPrefab.GetComponent<Statbox>());
-        IstatboxPrefab.GetComponent<Statbox>().clientId = clientId;
+        
 
         InvokeClientRpcOnEveryone(UpdateStats);
     }
