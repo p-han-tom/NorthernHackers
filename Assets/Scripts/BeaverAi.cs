@@ -42,7 +42,7 @@ public class BeaverAi : NetworkedBehaviour
                     RaycastHit2D hit = Physics2D.Raycast(raycastOrigin.position, player.transform.position - transform.position, visionRange);
                     Debug.DrawRay(raycastOrigin.position, player.transform.position - transform.position);
 
-                    if (hit.collider.tag != null && hit.collider.tag == "Player")
+                    if (hit.collider != null && hit.collider.tag == "Player")
                     {
                         state = beaverState.charge;
                         speed = chargeSpeed;
@@ -129,11 +129,6 @@ public class BeaverAi : NetworkedBehaviour
             rb.velocity = Vector2.zero;
             // rb.bodyType = RigidbodyType2D.Kinematic;
             stateTimer = 2f;
-
-            if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
-            {
-                other.gameObject.GetComponent<Player>().Stunned();
-            }
         }
     }
 }
