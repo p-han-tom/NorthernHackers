@@ -101,7 +101,7 @@ public class UIManager : NetworkedBehaviour
 
         GameObject IstatboxPrefab = Instantiate(statboxPrefab);
         IstatboxPrefab.transform.SetParent(hud.transform.Find("Stats").transform, false);
-        // IstatboxPrefab.GetComponent<NetworkedObject>().Spawn();
+        IstatboxPrefab.GetComponent<NetworkedObject>().Spawn();
         statboxes.Add(IstatboxPrefab.GetComponent<Statbox>());
         IstatboxPrefab.GetComponent<Statbox>().clientId = clientId;
 
