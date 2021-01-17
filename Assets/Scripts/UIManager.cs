@@ -64,7 +64,7 @@ public class UIManager : NetworkedBehaviour
         foreach (KeyValuePair<ulong, int> entry in woodTracker)
         {
             clientIds.Add(entry.Key);
-            // woodTracker[entry.Key] = 0;
+            AddWood(entry.Key, 9999);
         }
         InvokeClientRpcOnEveryone(CreateStatboxes, clientIds.ToArray());
 
