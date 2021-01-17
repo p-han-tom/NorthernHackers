@@ -7,6 +7,7 @@ using MLAPI;
 using MLAPI.Transports.UNET;
 using MLAPI.Messaging;
 using MLAPI.NetworkedVar;
+using UnityEngine.SceneManagement;
 
 public class UIManager : NetworkedBehaviour
 {
@@ -25,6 +26,7 @@ public class UIManager : NetworkedBehaviour
     [HideInInspector] public bool roundActive = false;
     public GameObject statboxPrefab;
     List<Statbox> statboxes;
+    GameObject exitButton;
     void Start()
     {
         sm = GameObject.Find("Stage").GetComponent<StageManager>();
@@ -33,6 +35,8 @@ public class UIManager : NetworkedBehaviour
         startButton = gameMenu.transform.Find("Go").gameObject;
         startButton.SetActive(false);
         hud = gameMenu.transform.Find("HUD").gameObject;
+        exitButton = transform.Find("Exit").gameObject;
+        exitButton.SetActive(false);
 
         gameMenu.SetActive(false);
 
@@ -42,6 +46,16 @@ public class UIManager : NetworkedBehaviour
         woodTracker = new Dictionary<ulong, int>();
         pointTracker = new Dictionary<ulong, int>();
         statboxes = new List<Statbox>();
+    }
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            exitButton.SetActive(!exitButton.activeSelf);
+        }
+    }
+    public void RestartScene() {
+        if (IsServer) NetworkingManager.Singleton.StopHost();
+        if (IsClient) NetworkingManager.Singleton.StopClient();
+        SceneManager.LoadScene("SampleScene");
     }
     // called by server
     public void StartRound()
