@@ -17,7 +17,6 @@ public class BeaverAi : NetworkedBehaviour
     Vector2 movement;
     Vector3 raycastOffset;
     List<GameObject> players;
-    public string ob;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
