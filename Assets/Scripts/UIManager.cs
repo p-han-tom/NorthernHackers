@@ -173,6 +173,7 @@ public class UIManager : NetworkedBehaviour
     {
         string playerName = GetName(clientId);
         pointTracker[clientId] = pointTracker[clientId] + 1;
+        AddWood(clientId, -999);
         // Debug.Log(GetName(clientId) + " has " + woodTracker[clientId] + " points.");
         UpdateStats();
     }
