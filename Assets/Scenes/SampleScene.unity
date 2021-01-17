@@ -8769,7 +8769,7 @@ MonoBehaviour:
   sounds:
   - clip: {fileID: 8300000, guid: 596e8073f719aad459c1bba9865c567c, type: 3}
     name: BeaverCharge
-    volume: 0.5
+    volume: 0.3
     pitch: 1
     loop: 0
     source: {fileID: 0}
@@ -8787,7 +8787,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - clip: {fileID: 8300000, guid: 3786571aff2dc254a890bdcef7e89fc0, type: 3}
     name: TreeBreak
-    volume: 0.4
+    volume: 0.2
     pitch: 0.698
     loop: 0
     source: {fileID: 0}
