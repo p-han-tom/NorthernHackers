@@ -49,13 +49,14 @@ public class Player : NetworkedBehaviour
 
     public void Hack()
     {
-        // logic for creating overlap circle
+        if (IsLocalPlayer)
+        {// logic for creating overlap circle
         Collider2D[] hitEntities = Physics2D.OverlapCircleAll(attackPoint.position, 0.5f, treeLayer);
         foreach (Collider2D entity in hitEntities)
         {
             audioManager.Play("TreeHit");
             entity.GetComponent<Tree>().HitTree(OwnerClientId);
-        }
+        }}
     }
     // Update is called once per frame
     void Update()
