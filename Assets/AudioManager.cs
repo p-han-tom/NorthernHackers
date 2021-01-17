@@ -22,17 +22,17 @@ public class AudioManager : NetworkedBehaviour
     }
 
     public void Play(string name) {
-        InvokeServerRpc(Play1,name);
+        // InvokeServerRpc(Play1,name);
         InvokeClientRpcOnEveryone(Play1, name);
     }
 
     public void Stop(string name) {
-        InvokeServerRpc(Stop1, name);
+        // InvokeServerRpc(Stop1, name);
         InvokeClientRpcOnEveryone(Stop1, name);
     }
 
 
-    [ServerRPC]
+    [ClientRPC]
     public void Play1(string name) {
         
         Sound s = Array.Find(sounds, sound => sound.name == name);
@@ -44,7 +44,7 @@ public class AudioManager : NetworkedBehaviour
         
     }
 
-    [ServerRPC]
+    [ClientRPC]
     public void Stop1(string name) {
         Sound s = Array.Find(sounds, sound => sound.name == name);
         if (s==null || !s.source.isPlaying) {
