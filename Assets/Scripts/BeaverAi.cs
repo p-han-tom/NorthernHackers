@@ -17,7 +17,6 @@ public class BeaverAi : NetworkedBehaviour
     Vector2 movement;
     Vector3 raycastOffset;
     List<GameObject> players;
-    public string ob;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -57,6 +56,11 @@ public class BeaverAi : NetworkedBehaviour
                 {
                     stateTimer = Random.Range(1, 2f);
                     state = beaverState.wander;
+                    for (float dist = 3; dist > 0; dist -= 0.01f)
+                    {
+                        RaycastHit2D hit = Physics2D.Raycast(transform.position + raycastOffset, movement, dist);
+                        if (hit.collider == null) break;
+                    }
                     movement = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
                 }
             }
@@ -112,12 +116,8 @@ public class BeaverAi : NetworkedBehaviour
 
     void OnCollisionStay2D(Collision2D other)
     {
-        if (state == beaverState.wander)
-        {
-            movement *= -1;
-        }
         // TODO: turn this into serverrpc maybe so that beaver will get stunned if client gets hit
-        else if (state == beaverState.charge)
+        if (state == beaverState.charge)
         {
             state = beaverState.stunned;
             animator.SetBool("charging", false);
