@@ -40,7 +40,7 @@ public class BeaverAi : NetworkedBehaviour
     {
         if (IsServer)
         {
-            if (chargeCooldown > 0f) {
+            if (chargeCooldown >= 0f) {
                 chargeCooldown -= Time.deltaTime;
             }
             if (state != beaverState.charge && state != beaverState.stunned)
@@ -108,7 +108,7 @@ public class BeaverAi : NetworkedBehaviour
             {
                 if (stateTimer <= 0)
                 {
-                    stateTimer = Random.Range(1, 2f);
+                    stateTimer = Random.Range(0.2f, 0.4f);
                     state = beaverState.wander;
                     animator.SetBool("charging", false);
                     animator.SetBool("moving", false);
@@ -123,9 +123,8 @@ public class BeaverAi : NetworkedBehaviour
     }
     void Move()
     {
-        if (chargeCooldown > 0f) GetOutOfWall();
         rb.velocity = movement * speed;
-        animator.SetBool("moving", true);
+        animator.SetBool("moving", true); 
         transform.rotation = (movement.x < 0 || chargeCooldown > 0f) ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
     }
 
@@ -140,13 +139,14 @@ public class BeaverAi : NetworkedBehaviour
             audioManager.Play("BeaverHit");
             audioManager.Stop("BeaverCharge");
             rb.velocity = Vector2.zero;
-            // rb.bodyType = RigidbodyType2D.Kinematic;
+            rb.bodyType = RigidbodyType2D.Kinematic;
             stateTimer = 2f;
-            chargeCooldown = 4f;
+            chargeCooldown = 3f;
+            GetOutOfWall();
         }
     }
 
     void GetOutOfWall() {
-        movement = -movement;
+        movement = -movement.normalized;
     }
 }
