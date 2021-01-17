@@ -8029,16 +8029,16 @@ CompositeCollider2D:
         Y: -52500000
   m_CompositePaths:
     m_Paths:
-    - - {x: 14.999971, y: -12}
-      - {x: 14.999971, y: 11}
-      - {x: -17, y: 10.99997}
-      - {x: -16.999971, y: -12}
-    - - {x: 9, y: -5.2499704}
-      - {x: -9, y: -5.2499704}
-      - {x: -8.99997, y: 5.375}
-      - {x: 9, y: 5.3749704}
+    - - {x: 15, y: 11}
+      - {x: -17, y: 11}
+      - {x: -17, y: -12}
+      - {x: 15, y: -12}
+    - - {x: -9, y: -5.25}
+      - {x: -9, y: 5.375}
+      - {x: 9, y: 5.375}
+      - {x: 9, y: -5.25}
   m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
+  m_OffsetDistance: 0
 --- !u!50 &677033464
 Rigidbody2D:
   serializedVersion: 4
@@ -8107,6 +8107,12 @@ MonoBehaviour:
     name: TreeHit
     volume: 1
     pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: 3786571aff2dc254a890bdcef7e89fc0, type: 3}
+    name: TreeBreak
+    volume: 0.634
+    pitch: 0.698
     loop: 0
     source: {fileID: 0}
 --- !u!4 &770764954

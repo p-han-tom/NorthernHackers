@@ -127,7 +127,7 @@ public class BeaverAi : NetworkedBehaviour
             audioManager.Play("BeaverHit");
             audioManager.Stop("BeaverCharge");
             rb.velocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Kinematic;
+            // rb.bodyType = RigidbodyType2D.Kinematic;
             stateTimer = 2f;
 
             if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
