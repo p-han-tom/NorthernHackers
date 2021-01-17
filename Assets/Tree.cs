@@ -29,12 +29,15 @@ public class Tree : NetworkedBehaviour
     [ServerRPC(RequireOwnership = false)]
     public void TakeDamage(ulong clientId) {
         hp.Value -= 1;
+        audioManager.Play("TreeHit");
+
         manager.AddWood(clientId, 1);
         animator.SetTrigger("hit");
         if (hp.Value == 0) {
             manager.AddWood(clientId, 5);
             manager.treeDestroyed();
             GameObject particleInstance = Instantiate(particles, transform.position, Quaternion.identity);
+            particleInstance.GetComponent<NetworkedObject>().Spawn();
             audioManager.Play("TreeBreak");
             Destroy(gameObject);
         }
