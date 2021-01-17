@@ -68,9 +68,13 @@ public class BeaverAi : NetworkedBehaviour
             if (state == beaverState.charge)
             {
                 speed += 0.1f;
-                if (speed > 10f) {
+                if (speed > 20f) {
                     state = beaverState.wander;
                     speed = normalSpeed;
+                    animator.SetBool("charging", false);
+                    animator.SetBool("moving", true);
+                    audioManager.Stop("BeaverCharge");
+                    stateTimer = 2f;
                 }
                 Move();
             }
