@@ -99,6 +99,6 @@ public class Player : NetworkedBehaviour
         animator.SetBool("stunned", true);
         stunTimer = .5f;
         stunned = true;
-        manager.AddWood(OwnerClientId, 5);
+        manager.AddWood(OwnerClientId, -5);
     }
 }
