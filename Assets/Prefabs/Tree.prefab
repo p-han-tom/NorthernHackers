@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 7574572452386716027}
   - component: {fileID: 7574572452386716026}
-  - component: {fileID: 7574572452386716004}
   - component: {fileID: 7574572452386716001}
   - component: {fileID: 7574572452386716000}
   - component: {fileID: 7574572452386716007}
   - component: {fileID: 7574572452386716006}
   - component: {fileID: 7574572452386716005}
+  - component: {fileID: 9091299174868700656}
   m_Layer: 10
   m_Name: Tree
   m_TagString: Untagged
@@ -88,32 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!61 &7574572452386716004
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7574572452386716025}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.01190576, y: 0.053957954}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.49269006, y: 0.38972414}
-    oldSize: {x: 1, y: 1.09375}
-    newSize: {x: 1, y: 1.09375}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.31986362, y: 0.4547682}
-  m_EdgeRadius: 0
 --- !u!114 &7574572452386716001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,3 +208,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!58 &9091299174868700656
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7574572452386716025}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0073099285, y: 0.12061423}
+  serializedVersion: 2
+  m_Radius: 0.27
