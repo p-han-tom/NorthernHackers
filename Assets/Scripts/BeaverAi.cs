@@ -129,11 +129,6 @@ public class BeaverAi : NetworkedBehaviour
             rb.velocity = Vector2.zero;
             // rb.bodyType = RigidbodyType2D.Kinematic;
             stateTimer = 2f;
-
-            if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
-            {
-                other.gameObject.GetComponent<Player>().Stunned();
-            }
         }
     }
 }
