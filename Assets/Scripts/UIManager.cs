@@ -52,12 +52,11 @@ public class UIManager : NetworkedBehaviour
             clientIds.Add(entry.Key);
             // woodTracker[entry.Key] = 0;
         }
+        InvokeClientRpcOnEveryone(CreateStatboxes, clientIds.ToArray());
 
         GameObject.Find("Stage").GetComponent<StageManager>().GenerateStage();
         roundActive = true;
-        startButton.SetActive(false);
-
-        InvokeClientRpcOnEveryone(CreateStatboxes, clientIds.ToArray());
+        startButton.SetActive(false);        
     }
     [ClientRPC]
     void CreateStatboxes(ulong[] clientIds)
@@ -74,7 +73,7 @@ public class UIManager : NetworkedBehaviour
             statboxes.Add(IstatboxPrefab.GetComponent<Statbox>());
             IstatboxPrefab.GetComponent<Statbox>().clientId = clientId;
         }
-        UpdateStats();
+        if (IsServer) UpdateStats();
     }
     [ClientRPC]
     public void UpdateStatsClient(string[] statTexts)
@@ -134,8 +133,6 @@ public class UIManager : NetworkedBehaviour
         gameMenu.SetActive(true);
 
         InvokeServerRpc(ClientInitiatePlayer, clientId, name);
-
-
     }
     [ServerRPC(RequireOwnership = false)]
     void ClientInitiatePlayer(ulong clientId, string name)
@@ -144,8 +141,6 @@ public class UIManager : NetworkedBehaviour
         woodTracker.Add(clientId, 0);
         pointTracker.Add(clientId, 0);
         Debug.Log(name + " (client " + clientId + ") has joined");
-
-        UpdateStats();
     }
 
     // Called from server

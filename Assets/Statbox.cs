@@ -17,6 +17,7 @@ public class Statbox : NetworkedBehaviour
     }
     public void UpdateTextWithText(string text)
     {
+        if (statsText != null)
         statsText.text = text;
     }
     public string GetText() { return statsText.text; }
