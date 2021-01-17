@@ -24,6 +24,7 @@ public class BeaverAi : NetworkedBehaviour
         players = new List<GameObject>();
         speed = normalSpeed;
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"));
     }
     void Update()
     {
@@ -102,7 +103,7 @@ public class BeaverAi : NetworkedBehaviour
         transform.rotation = (movement.x < 0) ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    void OnCollisionStay2D(Collision2D other)
     {
         if (state == beaverState.wander)
         {
