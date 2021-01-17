@@ -15,7 +15,7 @@ public class BeaverAi : NetworkedBehaviour
     beaverState state = beaverState.idle;
     float stateTimer = 0;
     Vector2 movement;
-    Vector3 raycastOffset;
+    Transform raycastOrigin;
     List<GameObject> players;
     void Start()
     {
@@ -24,7 +24,8 @@ public class BeaverAi : NetworkedBehaviour
         stateTimer = Random.Range(0, 2f);
         players = new List<GameObject>();
         speed = normalSpeed;
-        raycastOffset = GetComponent<CapsuleCollider2D>().offset;
+        raycastOrigin = transform.GetChild(0);
+        raycastOrigin.position += new Vector3(GetComponent<CapsuleCollider2D>().offset.x, GetComponent<CapsuleCollider2D>().offset.y, 0);
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"));
     }
@@ -36,9 +37,9 @@ public class BeaverAi : NetworkedBehaviour
             {
                 foreach (GameObject player in players)
                 {
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position + raycastOffset, player.transform.position - transform.position);
-                    Debug.DrawRay(transform.position + raycastOffset, player.transform.position - transform.position);
-                                            Debug.Log(hit.collider.gameObject.name);
+                    RaycastHit2D hit = Physics2D.Raycast(raycastOrigin.position, player.transform.position - transform.position);
+                    Debug.DrawRay(raycastOrigin.position, player.transform.position - transform.position);
+                                            Debug.Log(hit.collider.GetType()+", "+hit.collider.name);
 
                     if (hit.collider.tag == "Player")
                     {
@@ -58,7 +59,7 @@ public class BeaverAi : NetworkedBehaviour
                     state = beaverState.wander;
                     for (float dist = 3; dist > 0; dist -= 0.01f)
                     {
-                        RaycastHit2D hit = Physics2D.Raycast(transform.position + raycastOffset, movement, dist);
+                        RaycastHit2D hit = Physics2D.Raycast(raycastOrigin.position, movement, dist);
                         if (hit.collider == null) break;
                     }
                     movement = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
