@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 118816662}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 2615450720193938160}
   - component: {fileID: 2615450720193938162}
   - component: {fileID: 7179799535364496032}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -170,6 +170,7 @@ MonoBehaviour:
   treeLayer:
     serializedVersion: 2
     m_Bits: 1024
+  hacking: 0
 --- !u!114 &2615450720193938161
 MonoBehaviour:
   m_ObjectHideFlags: 0
