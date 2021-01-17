@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using MLAPI;
 
@@ -10,6 +11,7 @@ public class BeaverAi : NetworkedBehaviour
     private AudioManager audioManager;
     float normalSpeed = 1f;
     float chargeSpeed = 2f;
+    float visionRange = 8f;
     float speed;
     enum beaverState { idle, wander, charge, stunned }
     beaverState state = beaverState.idle;
@@ -22,7 +24,7 @@ public class BeaverAi : NetworkedBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         stateTimer = Random.Range(0, 2f);
-        players = new List<GameObject>();
+        players = GameObject.FindGameObjectsWithTag("Player").ToList<GameObject>();
         speed = normalSpeed;
         raycastOrigin = transform.GetChild(0);
         raycastOrigin.position += new Vector3(GetComponent<CapsuleCollider2D>().offset.x, GetComponent<CapsuleCollider2D>().offset.y, 0);
@@ -37,9 +39,8 @@ public class BeaverAi : NetworkedBehaviour
             {
                 foreach (GameObject player in players)
                 {
-                    RaycastHit2D hit = Physics2D.Raycast(raycastOrigin.position, player.transform.position - transform.position);
+                    RaycastHit2D hit = Physics2D.Raycast(raycastOrigin.position, player.transform.position - transform.position, visionRange);
                     Debug.DrawRay(raycastOrigin.position, player.transform.position - transform.position);
-                                            Debug.Log(hit.collider.GetType()+", "+hit.collider.name);
 
                     if (hit.collider.tag == "Player")
                     {
@@ -132,26 +133,6 @@ public class BeaverAi : NetworkedBehaviour
             if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
                 other.gameObject.GetComponent<Player>().Stunned();
-            }
-        }
-    }
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (IsServer)
-        {
-            if (other.tag == "Player")
-            {
-                players.Add(other.gameObject);
-            }
-        }
-    }
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (IsServer)
-        {
-            if (other.tag == "Player")
-            {
-                players.Remove(other.gameObject);
             }
         }
     }

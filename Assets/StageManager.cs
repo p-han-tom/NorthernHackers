@@ -50,7 +50,6 @@ public class StageManager : NetworkedBehaviour
                 beaverInstance.GetComponent<NetworkedObject>().Spawn();
 
                 beaverInstance.GetComponent<CapsuleCollider2D>().enabled = false;
-                beaverInstance.GetComponent<CircleCollider2D>().enabled = false;
                 beaverInstance.GetComponent<Rigidbody2D>().gravityScale = .5f;
                 beaverInstance.GetComponent<BeaverAi>().enabled = false;
                 beaverSpawned = true;
@@ -62,7 +61,6 @@ public class StageManager : NetworkedBehaviour
                 if (beaverInstance.transform.position.y <= beaverSpawnPos.y)
                 {
                     beaverInstance.GetComponent<CapsuleCollider2D>().enabled = true;
-                    beaverInstance.GetComponent<CircleCollider2D>().enabled = true;
                     beaverInstance.GetComponent<Rigidbody2D>().gravityScale = 0f;
                     beaverInstance.GetComponent<BeaverAi>().enabled = true;
 
