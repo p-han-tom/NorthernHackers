@@ -32,7 +32,7 @@ public class StageManager : NetworkedBehaviour
         if (IsServer && manager.roundActive == true)
         {
             beaverSpawnTimer += Time.deltaTime;
-            if (beaverSpawnTimer > 10f && beaverCount<3)
+            if (beaverSpawnTimer > 10f && beaverCount<5)
             {
                 beaverSpawnTimer = 0f;
                 beaverSpawnPos.x = Random.Range(-5f, 5f);
@@ -103,6 +103,10 @@ public class StageManager : NetworkedBehaviour
             }
             spawnTree = true;
 
+        }
+        
+        foreach (GameObject beaver in GameObject.FindGameObjectsWithTag("Beaver")) {
+            Destroy(beaver);
         }
     }
 }
