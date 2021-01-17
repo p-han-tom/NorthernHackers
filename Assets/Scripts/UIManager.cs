@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 using MLAPI;
@@ -45,16 +46,59 @@ public class UIManager : NetworkedBehaviour
     // called by server
     public void StartRound()
     {
+        List<ulong> clientIds = new List<ulong>();
+        foreach (KeyValuePair<ulong, int> entry in woodTracker)
+        {
+            clientIds.Add(entry.Key);
+            // woodTracker[entry.Key] = 0;
+        }
+
         GameObject.Find("Stage").GetComponent<StageManager>().GenerateStage();
         roundActive = true;
         startButton.SetActive(false);
 
-        foreach (KeyValuePair<ulong, int> entry in woodTracker)
+        InvokeClientRpcOnEveryone(CreateStatboxes, clientIds.ToArray());
+    }
+    [ClientRPC]
+    void CreateStatboxes(ulong[] clientIds)
+    {
+        List<ulong> LclientIds = clientIds.ToList<ulong>();
+        foreach (Statbox statbox in statboxes) {
+            Destroy(statbox.gameObject);
+        }
+        statboxes = new List<Statbox>();
+        foreach (ulong clientId in LclientIds)
         {
-            woodTracker[entry.Key] = 0;
+            GameObject IstatboxPrefab = Instantiate(statboxPrefab);
+            IstatboxPrefab.transform.SetParent(hud.transform.Find("Stats").transform, false);
+            statboxes.Add(IstatboxPrefab.GetComponent<Statbox>());
+            IstatboxPrefab.GetComponent<Statbox>().clientId = clientId;
+        }
+        UpdateStats();
+    }
+    [ClientRPC]
+    public void UpdateStatsClient(string[] statTexts)
+    {
+        List<string> LstatTexts = statTexts.ToList<string>();
+        for (int i = 0; i < LstatTexts.Count; i++)
+        {
+            ulong statboxId = statboxes[i].clientId;
+            statboxes[i].UpdateTextWithText(LstatTexts[i]);
         }
     }
-
+    void UpdateStats()
+    {
+        List<string> statTexts = new List<string>();
+        foreach (KeyValuePair<ulong, string> entry in playerNames)
+        {
+            string statText = "";
+            statText += entry.Value + "\n";
+            statText += "<sprite=1>" + woodTracker[entry.Key] + "\n";
+            statText += "<sprite=0>" + pointTracker[entry.Key];
+            statTexts.Add(statText);
+        }
+        InvokeClientRpcOnEveryone(UpdateStatsClient, statTexts.ToArray());
+    }
     public void HostGame()
     {
         NetworkingManager.Singleton.StartHost();
@@ -101,9 +145,7 @@ public class UIManager : NetworkedBehaviour
         pointTracker.Add(clientId, 0);
         Debug.Log(name + " (client " + clientId + ") has joined");
 
-        
-
-        InvokeClientRpcOnEveryone(UpdateStats);
+        UpdateStats();
     }
 
     // Called from server
@@ -111,7 +153,7 @@ public class UIManager : NetworkedBehaviour
     {
         woodTracker[clientId] = woodTracker[clientId] + wood;
         // Debug.Log(GetName(clientId) + " has " + woodTracker[clientId] + " wood.");
-        InvokeClientRpcOnEveryone(UpdateStats);
+        UpdateStats();
     }
     // Called from server
     public void AddPoint(ulong clientId)
@@ -119,16 +161,7 @@ public class UIManager : NetworkedBehaviour
         string playerName = GetName(clientId);
         pointTracker[clientId] = pointTracker[clientId] + 1;
         // Debug.Log(GetName(clientId) + " has " + woodTracker[clientId] + " points.");
-        InvokeClientRpcOnEveryone(UpdateStats);
-    }
-    [ClientRPC]
-    public void UpdateStats()
-    {
-        foreach (Statbox statbox in statboxes)
-        {
-            ulong statboxId = statbox.clientId;
-            statbox.UpdateText(GetName(statboxId), woodTracker[statboxId], pointTracker[statboxId]);
-        }
+        UpdateStats();
     }
     string GetName(ulong clientId)
     {

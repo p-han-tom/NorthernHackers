@@ -81,7 +81,7 @@ public class StageManager : NetworkedBehaviour
         float x;
         float y;
         bool spawnTree = true;
-        for (int i = 0; i < 24; i++)
+        for (int i = 0; i < 1; i++)
         {
             x = Random.Range(-8f, 8f);
             y = Random.Range(-3.5f, 3.5f);
