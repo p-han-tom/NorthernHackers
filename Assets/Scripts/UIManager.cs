@@ -64,7 +64,6 @@ public class UIManager : NetworkedBehaviour
         foreach (KeyValuePair<ulong, int> entry in woodTracker)
         {
             clientIds.Add(entry.Key);
-            AddWood(entry.Key, 9999);
         }
         InvokeClientRpcOnEveryone(CreateStatboxes, clientIds.ToArray());
 
@@ -95,8 +94,10 @@ public class UIManager : NetworkedBehaviour
         List<string> LstatTexts = statTexts.ToList<string>();
         for (int i = 0; i < LstatTexts.Count; i++)
         {
-            ulong statboxId = statboxes[i].clientId;
-            statboxes[i].UpdateTextWithText(LstatTexts[i]);
+            if (i<statboxes.Count) {
+                ulong statboxId = statboxes[i].clientId;
+                statboxes[i].UpdateTextWithText(LstatTexts[i]);
+            }
         }
     }
     void UpdateStats()
@@ -197,6 +198,7 @@ public class UIManager : NetworkedBehaviour
                 {
                     highestWood = entry.Value;
                     clientIdWinner = entry.Key;
+                    // AddWood(entry.Key, -9999);
                 }
             }
             AddPoint(clientIdWinner);
