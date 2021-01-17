@@ -84,6 +84,7 @@ public class BeaverAi : NetworkedBehaviour
                 {
                     stateTimer = Random.Range(1, 2f);
                     state = beaverState.idle;
+                    animator.SetBool("charging", false);
                     animator.SetBool("moving", false);
                     animator.SetBool("stunned", false);
                     rb.velocity = Vector2.zero;
