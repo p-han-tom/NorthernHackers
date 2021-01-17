@@ -56,7 +56,6 @@ public class Player : NetworkedBehaviour
         Collider2D[] hitEntities = Physics2D.OverlapCircleAll(attackPoint.position, 0.5f, treeLayer);
         foreach (Collider2D entity in hitEntities)
         {
-            audioManager.Play("TreeHit");
             entity.GetComponent<Tree>().HitTree(OwnerClientId);
         }}
     }

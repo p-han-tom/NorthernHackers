@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1830606799157285868}
   - component: {fileID: 7039429115909241300}
   - component: {fileID: 2807009708016994164}
+  - component: {fileID: 8456639115868882861}
   m_Layer: 0
   m_Name: Tree Break
   m_TagString: Untagged
@@ -4754,3 +4755,20 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &8456639115868882861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5862699435943484132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 209037615, guid: 01701b64234b4d523d8045142cbc73fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkedInstanceId: 0
+  PrefabHash: 10914490218857782452
+  PrefabHashGenerator: Tree Break
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
