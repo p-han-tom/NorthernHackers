@@ -54,6 +54,7 @@ public class BeaverAi : NetworkedBehaviour
                 foreach (GameObject player in players)
                 {
                     RaycastHit2D hit = Physics2D.Raycast(transform.position, player.transform.position - transform.position);
+                    Debug.DrawRay(transform.position, player.transform.position - transform.position);
                     if (hit.collider.tag == "Player")
                     {
                         state = beaverState.charge;

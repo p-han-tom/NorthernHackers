@@ -5,6 +5,7 @@ using TMPro;
 using MLAPI;
 using MLAPI.Transports.UNET;
 using MLAPI.Messaging;
+using MLAPI.NetworkedVar;
 
 public class UIManager : NetworkedBehaviour
 {

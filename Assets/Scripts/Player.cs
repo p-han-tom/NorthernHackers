@@ -71,7 +71,8 @@ public class Player : NetworkedBehaviour
 
         if (rb.velocity != Vector2.zero)
         {
-            transform.rotation = (movement.x < 0) ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
+            if (rb.velocity.x < -0.1f || rb.velocity.x > 0.1f)
+                transform.rotation = (movement.x < 0) ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
             animator.SetBool("moving", hacking ? false : true);
         }
         else

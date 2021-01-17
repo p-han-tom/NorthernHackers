@@ -13,7 +13,7 @@ public class Tree : NetworkedBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        hp = new NetworkedVarInt(Random.Range(4,7));
+        hp = new NetworkedVarInt(Random.Range(7,10));
         animator = GetComponent<Animator>();
         manager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
