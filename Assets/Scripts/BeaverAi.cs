@@ -25,7 +25,7 @@ public class BeaverAi : NetworkedBehaviour
         stateTimer = Random.Range(0, 2f);
         players = new List<GameObject>();
         speed = normalSpeed;
-        raycastOffset = GetComponent<BoxCollider2D>().offset;
+        raycastOffset = GetComponent<CapsuleCollider2D>().offset;
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"));
     }
@@ -39,6 +39,8 @@ public class BeaverAi : NetworkedBehaviour
                 {
                     RaycastHit2D hit = Physics2D.Raycast(transform.position + raycastOffset, player.transform.position - transform.position);
                     Debug.DrawRay(transform.position + raycastOffset, player.transform.position - transform.position);
+                                            Debug.Log(hit.collider.gameObject.name);
+
                     if (hit.collider.tag == "Player")
                     {
                         state = beaverState.charge;

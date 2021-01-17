@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5901404715116176280}
   - component: {fileID: 8187515348305680474}
   - component: {fileID: 1902773413209997560}
-  - component: {fileID: -3041514334700512858}
+  - component: {fileID: 2629377017806212507}
   m_Layer: 9
   m_Name: Beaver
   m_TagString: Untagged
@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d624d72bf6feba1428b172580cdf7767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ob: 
 --- !u!212 &2352722159552253518
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -245,8 +246,8 @@ MonoBehaviour:
   param3: 
   param4: 
   param5: 
---- !u!61 &-3041514334700512858
-BoxCollider2D:
+--- !u!70 &2629377017806212507
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -258,16 +259,6 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.1, y: -0.18}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 1}
-    newSize: {x: 2, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.73, y: 0.64305675}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0.21262881, y: -0.13753614}
+  m_Size: {x: 0.74171257, y: 0.6823493}
+  m_Direction: 1
