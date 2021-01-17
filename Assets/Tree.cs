@@ -7,7 +7,10 @@ using MLAPI.Messaging;
 
 public class Tree : NetworkedBehaviour
 {
+
+    public GameObject particles;
     private Animator animator;
+    private AudioManager audioManager;
     UIManager manager;
     NetworkedVarInt hp;
     // Start is called before the first frame update
@@ -15,6 +18,7 @@ public class Tree : NetworkedBehaviour
     {
         hp = new NetworkedVarInt(Random.Range(7,10));
         animator = GetComponent<Animator>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         manager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
@@ -30,6 +34,8 @@ public class Tree : NetworkedBehaviour
         if (hp.Value == 0) {
             manager.AddWood(clientId, 5);
             manager.treeDestroyed();
+            GameObject particleInstance = Instantiate(particles, transform.position, Quaternion.identity);
+            audioManager.Play("TreeBreak");
             Destroy(gameObject);
         }
     }

@@ -42,7 +42,7 @@ public class BeaverAi : NetworkedBehaviour
                     RaycastHit2D hit = Physics2D.Raycast(raycastOrigin.position, player.transform.position - transform.position, visionRange);
                     Debug.DrawRay(raycastOrigin.position, player.transform.position - transform.position);
 
-                    if (hit.collider.tag == "Player")
+                    if (hit.collider.tag == "Player" && Vector2.Distance(hit.collider.transform.position, transform.position) < 6f)
                     {
                         state = beaverState.charge;
                         speed = chargeSpeed;
