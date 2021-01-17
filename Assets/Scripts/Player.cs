@@ -13,6 +13,7 @@ public class Player : NetworkedBehaviour
     private AudioManager audioManager;
     private float stunTimer;
     private bool stunned;
+    UIManager manager;
 
     public LayerMask treeLayer;
     public bool hacking = false;
@@ -25,6 +26,7 @@ public class Player : NetworkedBehaviour
         animator = GetComponent<Animator>();
         attackPoint = transform.Find("AttackPoint");
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        manager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     void CheckInput()
@@ -97,5 +99,6 @@ public class Player : NetworkedBehaviour
         animator.SetBool("stunned", true);
         stunTimer = .5f;
         stunned = true;
+        manager.AddWood(OwnerClientId, 5);
     }
 }

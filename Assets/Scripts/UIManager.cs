@@ -147,6 +147,9 @@ public class UIManager : NetworkedBehaviour
     public void AddWood(ulong clientId, int wood)
     {
         woodTracker[clientId] = woodTracker[clientId] + wood;
+        if (woodTracker[clientId] < 0) {
+            woodTracker[clientId] = 0;
+        }
         // Debug.Log(GetName(clientId) + " has " + woodTracker[clientId] + " wood.");
         UpdateStats();
     }
