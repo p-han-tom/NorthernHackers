@@ -68,6 +68,10 @@ public class BeaverAi : NetworkedBehaviour
             if (state == beaverState.charge)
             {
                 speed += 0.1f;
+                if (speed > 10f) {
+                    state = beaverState.wander;
+                    speed = normalSpeed;
+                }
                 Move();
             }
             else if (state == beaverState.stunned)
@@ -110,6 +114,10 @@ public class BeaverAi : NetworkedBehaviour
             rb.velocity = Vector2.zero;
             rb.bodyType = RigidbodyType2D.Kinematic;
             stateTimer = 2f;
+
+            if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
+                other.gameObject.GetComponent<Player>().Stunned();
+            }
         }
     }
     void OnTriggerEnter2D(Collider2D other)

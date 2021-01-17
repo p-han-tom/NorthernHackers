@@ -11,9 +11,12 @@ public class Player : NetworkedBehaviour
     private Animator animator;
     private Transform attackPoint;
     private AudioManager audioManager;
+    private float stunTimer;
+    private bool stunned;
 
     public LayerMask treeLayer;
     public bool hacking = false;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -32,8 +35,8 @@ public class Player : NetworkedBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            animator.SetBool("hacking", true);
-            hacking = true;
+            animator.SetBool("hacking", stunned ? false : true);
+            hacking = stunned ? false : true;
 
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = (mousePos - transform.position).normalized;
@@ -60,8 +63,16 @@ public class Player : NetworkedBehaviour
 
         if (IsLocalPlayer)
         {
+        
             CheckInput();
             Move();
+            if (stunTimer > 0) {
+                rb.velocity = Vector2.zero;
+                stunTimer -= Time.deltaTime;
+            } else {
+                animator.SetBool("stunned", false);
+                stunned = false;
+            }
         }
     }
 
@@ -73,11 +84,17 @@ public class Player : NetworkedBehaviour
         {
             if (rb.velocity.x < -0.1f || rb.velocity.x > 0.1f)
                 transform.rotation = (movement.x < 0) ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
-            animator.SetBool("moving", hacking ? false : true);
+            animator.SetBool("moving", hacking || stunned ? false : true);
         }
         else
         {
             animator.SetBool("moving", false);
         }
+    }
+
+    public void Stunned(){
+        animator.SetBool("stunned", true);
+        stunTimer = .5f;
+        stunned = true;
     }
 }
