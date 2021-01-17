@@ -113,15 +113,15 @@ public class UIManager : NetworkedBehaviour
     public void AddWood(ulong clientId, int wood)
     {
         woodTracker[clientId] = woodTracker[clientId] + wood;
-        Debug.Log(GetName(clientId) + " has " + woodTracker[clientId] + " wood.");
+        // Debug.Log(GetName(clientId) + " has " + woodTracker[clientId] + " wood.");
         InvokeClientRpcOnEveryone(UpdateStats);
     }
-    // Called from server TODO: add call for this
+    // Called from server
     public void AddPoint(ulong clientId)
     {
         string playerName = GetName(clientId);
         pointTracker[clientId] = pointTracker[clientId] + 1;
-        Debug.Log(GetName(clientId) + " has " + woodTracker[clientId] + " points.");
+        // Debug.Log(GetName(clientId) + " has " + woodTracker[clientId] + " points.");
         InvokeClientRpcOnEveryone(UpdateStats);
     }
     [ClientRPC]
