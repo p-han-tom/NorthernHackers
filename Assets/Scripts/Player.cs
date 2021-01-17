@@ -24,37 +24,44 @@ public class Player : NetworkedBehaviour
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
-    void CheckInput() {
+    void CheckInput()
+    {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-    
-        
 
-        if (Input.GetMouseButtonDown(0)) {
-            animator.SetTrigger("hack");
+
+        if (Input.GetMouseButton(0))
+        {
+            animator.SetBool("hacking", true);
             hacking = true;
 
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = (mousePos-transform.position).normalized;
+            Vector2 direction = (mousePos - transform.position).normalized;
             transform.rotation = (direction.x < 0) ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
-            
-            // logic for creating overlap circle
-            Collider2D[] hitEntities = Physics2D.OverlapCircleAll(attackPoint.position, 0.5f, treeLayer);
-            foreach (Collider2D entity in hitEntities) {
-                audioManager.Play("TreeHit");
-                entity.GetComponent<Tree>().HitTree(OwnerClientId);
-            }
+        }
+        else {
+            animator.SetBool("hacking", false);
         }
     }
 
-
+    public void Hack()
+    {
+        // logic for creating overlap circle
+        Collider2D[] hitEntities = Physics2D.OverlapCircleAll(attackPoint.position, 0.5f, treeLayer);
+        foreach (Collider2D entity in hitEntities)
+        {
+            audioManager.Play("TreeHit");
+            entity.GetComponent<Tree>().HitTree(OwnerClientId);
+        }
+    }
     // Update is called once per frame
     void Update()
     {
-        
-        if (IsLocalPlayer) {
+
+        if (IsLocalPlayer)
+        {
             CheckInput();
-            Move(); 
+            Move();
         }
     }
 
